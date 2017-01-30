@@ -8,6 +8,7 @@ Created on Tue Jan 24 12:24:00 2017
 
 from Tkinter import *
 from ttk import Frame, Button, Style
+from Parser import Backend_Manager
 
 
 
@@ -17,6 +18,7 @@ class Main_Window(Frame):
         Frame.__init__(self,parent)
         
         self.parent = parent
+        self.back_end = Backend_Manager('Gauge_Data_csv.csv' ,'/home/rich/Documents/Alliance/Programs')
         self.initUI()
         
     def initUI(self):
@@ -26,20 +28,27 @@ class Main_Window(Frame):
         
         frame_1=self.parent
 
+        BOM_lst = []
+
         Item_ent = Entry(frame_1)
-        Calc_btn = Button(frame_1, text="Calculate")
+        Calc_btn = Button(frame_1, text="Calculate", command=lambda: self.back_end.parse(Item_ent.get(), BOM_lst))
 
         Glue_lbl = Label(frame_1, text="Glue")
         Paper_lbl = Label(frame_1, text="Paper")
         Liner_lbl = Label(frame_1, text="Liner")
 
+
+
         Glue_txt = Text(frame_1, height=1, width = 20)
         Paper_txt = Text(frame_1, height=1, width = 20)
         Liner_txt = Text(frame_1, height=1, width = 20)
 
+        BOM_lst.append( Glue_txt)
+        BOM_lst.append( Paper_txt)
+        BOM_lst.append( Liner_txt)
+
         Item_ent.grid(row = 0, rowspan=2)
         Calc_btn.grid(row=0, column = 1, rowspan=2)
-
 
         Glue_lbl.grid(row=2, column = 0, stick=W)
         Glue_txt.grid(row=2, column = 1)
@@ -47,6 +56,8 @@ class Main_Window(Frame):
         Paper_txt.grid(row=3, column=1)
         Liner_lbl.grid(row=4, column=0, stick=W)
         Liner_txt.grid(row=4, column=1)
+
+
 
 def main():
     root = Tk()
