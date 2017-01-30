@@ -3,6 +3,7 @@ from Tkconstants import *
 import pandas as pd
 import os
 import re
+import numpy as np
 
 
 class Backend_Manager():
@@ -21,6 +22,41 @@ class Backend_Manager():
             Text_Fields['Desc'].insert(END, description)
             Text_Fields['Glue'].delete('1.0',END)
             Text_Fields['Glue'].insert(END, "Glue Value")
+
+            legs, gauge, length = cb.get_measurements()
+            print(gauge)
+            gauge_range = self.lookup_neighbor_indicies(gauge)
+
+            if len(gauge_range) == 1:
+                pass
+                #linear_density = self.gauge_table.ix[gauge_range][legs]
+                #Text_Fields['Paper'].delete('1.0', END)
+                #Text_Fields['Paper'].insert(END, str(linear_density * length))
+
+
+
+
+
+
+    def lookup_neighbor_indicies(self, gauge):
+        array = self.gauge_table['Thickness ']
+        value = gauge
+        idx = (np.abs(array-value)).argmin()
+        neighbor = array[idx]
+
+        if neighbor > value:
+            upper = idx
+            lower = idx + 1
+            return [upper, lower]
+
+        elif neighbor < value:
+            lower = idx
+            upper = idx - 1
+            return [upper, lower]
+
+        else:
+            return [idx]
+
 
 
 
@@ -110,6 +146,28 @@ class CornerBoard_Item():
         self.full_description = '{0} x {1} \t {2} Ga {3} in '.format(self.leg1_str, self.leg2_str, self.gauge_str , self.length_str)
 
         return self.full_description
+
+
+    def get_measurements(self):
+
+        paper_size = sum(self.legs)
+
+        if paper_size == 3:
+            leg_dims  = '1.5x1.5'
+        elif paper_size == 4:
+            leg_dims = '2x2'
+        elif paper_size == 5:
+            leg_dims = '2.5x2.5'
+        elif paper_size == 6:
+            leg_dims= '3x3'
+        elif paper_size == 8:
+            leg_dims = '4x4'
+        else:
+            print('Error: Invalid Legsize: ', paper_size, self.legs)
+
+
+        return  paper_size, float(self.gauge), self.length
+
 
 
 def LookupTable():
