@@ -28,10 +28,10 @@ class Main_Window(Frame):
         
         frame_1=self.parent
 
-        BOM_lst = []
+
 
         Item_ent = Entry(frame_1)
-        Calc_btn = Button(frame_1, text="Calculate", command=lambda: self.back_end.parse(Item_ent.get(), BOM_lst))
+        Calc_btn = Button(frame_1, text="Calculate", command=lambda: self.back_end.parse(Item_ent.get(), Txt_dic))
 
         Glue_lbl = Label(frame_1, text="Glue")
         Paper_lbl = Label(frame_1, text="Paper")
@@ -42,20 +42,24 @@ class Main_Window(Frame):
         Glue_txt = Text(frame_1, height=1, width = 20)
         Paper_txt = Text(frame_1, height=1, width = 20)
         Liner_txt = Text(frame_1, height=1, width = 20)
+        ItemDesc_txt = Text(frame_1, height=1, width= 30)
 
-        BOM_lst.append( Glue_txt)
-        BOM_lst.append( Paper_txt)
-        BOM_lst.append( Liner_txt)
+
+
+        Txt_dic = {'Glue':Glue_txt , 'Paper':Paper_txt, 'Liner':Liner_txt, 'Desc':ItemDesc_txt}
 
         Item_ent.grid(row = 0, rowspan=2)
         Calc_btn.grid(row=0, column = 1, rowspan=2)
 
-        Glue_lbl.grid(row=2, column = 0, stick=W)
-        Glue_txt.grid(row=2, column = 1)
-        Paper_lbl.grid(row=3, column=0, stick=W)
-        Paper_txt.grid(row=3, column=1)
-        Liner_lbl.grid(row=4, column=0, stick=W)
-        Liner_txt.grid(row=4, column=1)
+        x = 1
+        ItemDesc_txt.grid(row= 1 + x)
+        Glue_lbl.grid(row=2 + x, column = 0, stick=W)
+        Glue_txt.grid(row=2 + x, column = 1)
+        Paper_lbl.grid(row=3 + x, column=0, stick=W)
+        Paper_txt.grid(row=3 + x, column=1)
+        Liner_lbl.grid(row=4 + x, column=0, stick=W)
+        Liner_txt.grid(row=4 + x, column=1)
+
 
 
 
