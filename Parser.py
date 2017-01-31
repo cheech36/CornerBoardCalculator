@@ -73,6 +73,15 @@ class CornerBoard_Item():
             print('Bundled Item')
 
         else:
+
+
+
+
+
+
+
+
+
             print ("True Gauge Item")
      #       gauge = measurements[0:-3]
 
@@ -82,7 +91,8 @@ class CornerBoard_Item():
                 self.legs_str    = measurements[0:2]
                 self.gauge_str = measurements[2:5]
                 self.gauge   = int(self.gauge_str)/1000
-                legsize = int(self.legs_str[0:int(len(self.legs_str)/2)])
+                legsize = [int(self.legs_str[0]),int(self.legs_str[1])]
+                self.legs = list(legsize)
                 self.length_str  = measurements[5:]
                 self.length = float(self.length_str)
             # 9 -> 4 legs, 3 gauge, 2 length
@@ -91,7 +101,10 @@ class CornerBoard_Item():
                 self.legs_str    = measurements[0:4]
                 self.gauge_str = measurements[4:7]
                 self.gauge   = int(self.gauge_str)/1000
-                legsize = int(self.legs_str[0:int(len(self.legs_str)/2)])/10
+                leg1 = self.legs_str[0:2]
+                leg2 = self.legs_str[2:4]
+                legsize = [int(leg1)/10, int(leg2)/10]
+                self.legs = list(legsize)
                 self.length_str  = measurements[7:]
                 self.length = float(self.length_str)
 
@@ -101,6 +114,10 @@ class CornerBoard_Item():
 
             else:
                 print('Special Item: Calculate by hand')
+
+
+
+
 
 
         x = len(self.legs_str)
