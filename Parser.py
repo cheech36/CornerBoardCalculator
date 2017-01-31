@@ -37,6 +37,8 @@ class CornerBoard_Item():
         self.legs = []
         self.gauge = 0
         self.length = 0
+        self.total_legs_size = 0
+        self.standard_legs_str = ''
         self.gauge_str = ''
         self.legs_str = ''
         self.full_description = ''
@@ -49,21 +51,21 @@ class CornerBoard_Item():
         if (measurements.find("DX") != -1):
             print ("DX Item")
             legs_gauge, self.length_str = re.split("DX", measurements)
-            legs = legs_gauge[0:-3]
-            _ , gauge_str = legs_gauge.split(legs)
-            self.legs_str = str(legs)
+            self.legs_str = legs_gauge[0:-3]
+            _ , self.gauge_str = legs_gauge.split(self.legs_str)
             self.length = float(self.length_str)
 
-            if (len(legs) == 2):
-                legsize = [int(legs[0]), int(legs[1])]
+            if (len(self.legs_str) == 2):
+                legsize = [int(self.legs_str[0]), int(self.legs_str[1])]
                 self.legs = list(legsize)
 
+            elif(len(self.legs_str) == 4):
+                leg1 = self.legs_str[0:2]
+                leg2 = self.legs_str[2:4]
+                legsize = [int(leg1)/10, int(leg2)/10]
+                self.legs = list(legsize)
 
-            elif(len(legs) == 4):
-                legsize = [int(legs[0:2])/10, int(legs[2:4])/10]
-                self.legsize = list(legsize)
-
-            gauge = (int(gauge_str) - 30) / 1000
+            gauge = (int(self.gauge_str) - 30) / 1000
             self.gauge_str = str(gauge)
             self.gauge = float(gauge)
 
