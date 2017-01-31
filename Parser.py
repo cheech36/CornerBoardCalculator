@@ -11,7 +11,6 @@ class Backend_Manager():
         self.data_path = os.path.join(path, file)
         data_path = os.path.join(path, file)
         self.gauge_table = pd.read_csv(data_path)
-        print(self.gauge_table.head())
 
     def parse(self, item, Text_Fields):
             print('Parsing Item {0}'.format(item))
@@ -29,9 +28,12 @@ class Backend_Manager():
 
             if len(gauge_range) == 1:
                 pass
-                #linear_density = self.gauge_table.ix[gauge_range][legs]
-                #Text_Fields['Paper'].delete('1.0', END)
-                #Text_Fields['Paper'].insert(END, str(linear_density * length))
+                linear_density = float(self.gauge_table.ix[gauge_range][legs])
+                print('Linear Density: ', linear_density)
+                Text_Fields['Paper'].delete('1.0', END)
+                print('length: ', length)
+                PAPER_WEIGHT = str(linear_density * float(length) / 12)
+                Text_Fields['Paper'].insert(END, PAPER_WEIGHT)
 
 
 
@@ -80,12 +82,12 @@ class CornerBoard_Item():
 
         if (measurements.find("DX") != -1):
             print ("DX Item")
-            legs_gauge, length = re.split("DX", measurements)
+            legs_gauge, self.length = re.split("DX", measurements)
             legs = legs_gauge[0:-3]
             _ , gauge_str = legs_gauge.split(legs)
 
             self.legs_str = str(legs)
-            self.length_str = str(length)
+            self.length_str = str(self.length)
 
             if (len(legs) == 2):
                 legsize = [int(legs[0]), int(legs[1])]
@@ -115,6 +117,7 @@ class CornerBoard_Item():
                 self.gauge   = int(self.gauge_str)/1000
                 legsize = int(self.legs_str[0:int(len(self.legs_str)/2)])
                 self.length_str  = measurements[5:]
+                self.length = float(self.length_str)
             # 9 -> 4 legs, 3 gauge, 2 length
             # 10-> 4 legs, 3 guage, 3 length
             elif(len(measurements) == 9 or len(measurements) == 10):
@@ -123,6 +126,8 @@ class CornerBoard_Item():
                 self.gauge   = int(self.gauge_str)/1000
                 legsize = int(self.legs_str[0:int(len(self.legs_str)/2)])/10
                 self.length_str  = measurements[7:]
+                self.length = float(self.length_str)
+
             # 11, 12-> Fractional Lengths
             elif(len(measurements) == 11):
                 pass
@@ -166,14 +171,10 @@ class CornerBoard_Item():
             print('Error: Invalid Legsize: ', paper_size, self.legs)
 
 
-        return  paper_size, float(self.gauge), self.length
+        return  leg_dims, float(self.gauge), self.length
 
 
 
 def LookupTable():
     def __init__(self):
         pass
-
-
-
-
