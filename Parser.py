@@ -7,10 +7,12 @@ import numpy as np
 
 
 class Backend_Manager():
-    def __init__(self, file, path):
-        self.data_path = os.path.join(path, file)
-        data_path = os.path.join(path, file)
-        self.lookup_table = pd.read_csv(data_path)
+    def __init__(self, paper_table, liner_table, path):
+        paper_path = os.path.join(path, paper_table)
+        liner_table = os.path.join(path, liner_table)
+        self.liner_table = pd.read_csv(liner_table)
+        self.lookup_table = pd.read_csv(paper_path)
+
         self.Text_Fields = dict()
 
     def parse(self, item):
@@ -18,9 +20,12 @@ class Backend_Manager():
             cb = CornerBoard_Item(item)
             description = cb.parse()
             PAPER_WEIGHT = cb.get_paper_weight(self.lookup_table)
+            LINER_WEIGHT = cb.get_liner_weight(self.liner_table)
             self.update_txt('Desc', description)
-            self.update_txt('Paper', PAPER_WEIGHT)
             self.update_txt('Glue', 'Na')
+            self.update_txt('Paper', PAPER_WEIGHT)
+            self.update_txt('Liner',  LINER_WEIGHT)
+
 
     def update_txt(self, field, text):
         self.Text_Fields[field].delete('1.0',END)
@@ -74,14 +79,6 @@ class CornerBoard_Item():
 
         else:
 
-
-
-
-
-
-
-
-
             print ("True Gauge Item")
      #       gauge = measurements[0:-3]
 
@@ -115,11 +112,6 @@ class CornerBoard_Item():
             else:
                 print('Special Item: Calculate by hand')
 
-
-
-
-
-
         x = len(self.legs_str)
         if(x==2):
             y = 1
@@ -128,7 +120,6 @@ class CornerBoard_Item():
 
         self.leg1_str = self.legs_str[0:y]
         self.leg2_str = self.legs_str[y:]
-
         self.full_description = '{0} x {1} \t {2} Ga {3} in '.format(self.leg1_str, self.leg2_str, self.gauge_str , self.length_str)
 
         return self.full_description
@@ -179,7 +170,14 @@ class CornerBoard_Item():
         linear_density = self.calc_linear_paper_density(table)
         length_feet = self.length / 12
         paper_weight   = linear_density * length_feet
-        return paper_weight
+        return '{0:.3f}'.format(paper_weight)
 
+
+
+    def get_liner_weight(self, liner_table):
+        print(liner_table)
+        liner_density = float(liner_table[self.standard_legs] / 12)
+        liner_weight = liner_density * self.length
+        return '{0:.3f}'.format(liner_weight)
 
 

@@ -18,7 +18,12 @@ class Main_Window(Frame):
         Frame.__init__(self,parent)
         
         self.parent = parent
-        self.back_end = Backend_Manager('Gauge_Data_csv.csv' ,'/home/rich/Documents/Alliance/Programs')
+
+        path = '/home/rich/Documents/Alliance/Programs/Calculator'
+        paper_table = 'Gauge_Data_csv.csv'
+        liner_table = 'Liner_Table.csv'
+
+        self.back_end = Backend_Manager(paper_table, liner_table, path)
         self.initUI()
         
     def initUI(self):
