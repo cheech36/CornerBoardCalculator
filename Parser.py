@@ -11,16 +11,15 @@ class Backend_Manager():
         self.data_path = os.path.join(path, file)
         data_path = os.path.join(path, file)
         self.gauge_table = pd.read_csv(data_path)
+        self.Text_Fields = dict()
 
-    def parse(self, item, Text_Fields):
+    def parse(self, item):
             print('Parsing Item {0}'.format(item))
             cb = CornerBoard_Item(item)
             description = cb.parse()
 
-            Text_Fields['Desc'].delete('1.0',END)
-            Text_Fields['Desc'].insert(END, description)
-            Text_Fields['Glue'].delete('1.0',END)
-            Text_Fields['Glue'].insert(END, "Glue Value")
+            self.update_txt('Desc', description)
+            self.update_txt('Glue', 'Na')
 
             legs, gauge, length = cb.get_measurements()
             print(gauge)
@@ -29,15 +28,20 @@ class Backend_Manager():
             if len(gauge_range) == 1:
                 pass
                 linear_density = float(self.gauge_table.ix[gauge_range][legs])
-                print('Linear Density: ', linear_density)
-                Text_Fields['Paper'].delete('1.0', END)
+
                 print('length: ', length)
                 PAPER_WEIGHT = str(linear_density * float(length) / 12)
-                Text_Fields['Paper'].insert(END, PAPER_WEIGHT)
+                self.update_txt('Paper',PAPER_WEIGHT)
 
 
 
+    def update_txt(self, field, text):
+        self.Text_Fields[field].delete('1.0',END)
+        self.Text_Fields[field].insert(END, text)
 
+
+    def set_text_dict(self, text_fields):
+        self.Text_Fields = text_fields
 
 
     def lookup_neighbor_indicies(self, gauge):

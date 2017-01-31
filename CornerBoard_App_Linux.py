@@ -25,13 +25,10 @@ class Main_Window(Frame):
         self.parent.title("CornerBoard Calculator")
         self.style = Style()
         self.style.theme_use("default")
-        
         frame_1=self.parent
 
-
-
         Item_ent = Entry(frame_1)
-        Calc_btn = Button(frame_1, text="Calculate", command=lambda: self.back_end.parse(Item_ent.get(), Txt_dic))
+        Calc_btn = Button(frame_1, text="Calculate", command=lambda: self.back_end.parse(Item_ent.get()))
 
         Glue_lbl = Label(frame_1, text="Glue")
         Paper_lbl = Label(frame_1, text="Paper")
@@ -44,10 +41,8 @@ class Main_Window(Frame):
         Liner_txt = Text(frame_1, height=1, width = 20)
         ItemDesc_txt = Text(frame_1, height=1, width= 30)
 
-
-
-        Txt_dic = {'Glue':Glue_txt , 'Paper':Paper_txt, 'Liner':Liner_txt, 'Desc':ItemDesc_txt}
-
+        Txt_dict = {'Glue':Glue_txt , 'Paper':Paper_txt, 'Liner':Liner_txt, 'Desc':ItemDesc_txt}
+        self.back_end.set_text_dict(Txt_dict)
         Item_ent.grid(row = 0, rowspan=2)
         Calc_btn.grid(row=0, column = 1, rowspan=2)
 
