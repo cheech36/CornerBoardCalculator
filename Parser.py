@@ -4,10 +4,13 @@ import pandas as pd
 import os
 import re
 import numpy as np
+from Tkinter import Tk
+
 
 
 class Backend_Manager():
-    def __init__(self, paper_table, liner_table, path):
+    def __init__(self, parent,  paper_table, liner_table, path):
+        self.parent = parent
         paper_path = os.path.join(path, paper_table)
         liner_table = os.path.join(path, liner_table)
         self.liner_table = pd.read_csv(liner_table)
@@ -18,6 +21,8 @@ class Backend_Manager():
     def parse(self, item):
             print('Parsing Item {0}'.format(item))
             cb = CornerBoard_Item(item)
+            self.parent.clipboard_clear()
+            self.parent.clipboard_append(item)
             cb.whse = self.whse
             description = cb.parse()
             PAPER_WEIGHT = cb.get_paper_weight(self.lookup_table)

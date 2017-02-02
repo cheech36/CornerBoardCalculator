@@ -23,7 +23,7 @@ class Main_Window(Frame):
         paper_table = 'Gauge_Data_csv.csv'
         liner_table = 'Liner_Table.csv'
 
-        self.back_end = Backend_Manager(paper_table, liner_table, path)
+        self.back_end = Backend_Manager(self.parent, paper_table, liner_table, path)
         self.initUI()
         
     def initUI(self):
@@ -34,6 +34,7 @@ class Main_Window(Frame):
 
         Item_ent = Entry(frame_1)
         Calc_btn = Button(frame_1, text="Calculate", command=lambda: self.back_end.parse(Item_ent.get()))
+        self.parent.clipboard_append(Item_ent.get())
 
         Glue_lbl = Label(frame_1, text="Glue")
         Paper_lbl = Label(frame_1, text="Paper")
