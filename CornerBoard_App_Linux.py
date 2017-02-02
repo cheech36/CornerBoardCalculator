@@ -39,7 +39,16 @@ class Main_Window(Frame):
         Paper_lbl = Label(frame_1, text="Paper")
         Liner_lbl = Label(frame_1, text="Liner")
 
+        Warehouses = [("001", 1), ("LVS", 2)]
+        whse = IntVar()
+        rb_001 = Radiobutton(frame_1, text="001", padx = 20, variable=whse,
+                                         command=lambda:self.switch(whse), value=1)
 
+        rb_LVS = Radiobutton(frame_1, text="LVS", padx = 20, variable=whse,
+                                         command=lambda:self.switch(whse), value=2)
+
+        rb_001.grid(row = 8, sticky=W)
+        rb_LVS.grid(row = 9, sticky=W)
 
         Glue_txt = Text(frame_1, height=1, width = 20)
         Paper_txt = Text(frame_1, height=1, width = 20)
@@ -60,6 +69,9 @@ class Main_Window(Frame):
         Liner_lbl.grid(row=4 + x, column=0, stick=W)
         Liner_txt.grid(row=4 + x, column=1)
 
+    def switch(self, var):
+        self.back_end.switch_warehouse(var.get())
+
 
 
 
@@ -68,7 +80,9 @@ def main():
     root.geometry("350x250")
     app = Main_Window(root)
     root.mainloop()
-    
+
+
+
     
 if __name__ == '__main__':
     main()

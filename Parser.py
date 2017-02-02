@@ -12,12 +12,13 @@ class Backend_Manager():
         liner_table = os.path.join(path, liner_table)
         self.liner_table = pd.read_csv(liner_table)
         self.lookup_table = pd.read_csv(paper_path)
-
         self.Text_Fields = dict()
+        self.whse = 1   # Set to 001 by default
 
     def parse(self, item):
             print('Parsing Item {0}'.format(item))
             cb = CornerBoard_Item(item)
+            cb.whse = self.whse
             description = cb.parse()
             PAPER_WEIGHT = cb.get_paper_weight(self.lookup_table)
             LINER_WEIGHT = cb.get_liner_weight(self.liner_table)
@@ -31,9 +32,17 @@ class Backend_Manager():
         self.Text_Fields[field].delete('1.0',END)
         self.Text_Fields[field].insert(END, text)
 
-
     def set_text_dict(self, text_fields):
         self.Text_Fields = text_fields
+
+    def switch_warehouse(self, whse):
+        if (whse == 1):
+            self.whse = 1
+
+        else:
+            self.whse = 1.15
+
+
 
 class CornerBoard_Item():
     def __init__(self, item_code):
@@ -169,7 +178,7 @@ class CornerBoard_Item():
     def get_paper_weight(self,table):
         linear_density = self.calc_linear_paper_density(table)
         length_feet = self.length / 12
-        paper_weight   = linear_density * length_feet
+        paper_weight   = linear_density * length_feet * self.whse
         return '{0:.3f}'.format(paper_weight)
 
 
