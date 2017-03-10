@@ -33,15 +33,20 @@ class Main_Window(Frame):
         self.style.theme_use("default")
         frame_1=self.parent
 
+
         Item_ent = Entry(frame_1)
-        Calc_btn = Button(frame_1, text="Calculate", command=lambda: self.back_end.parse(Item_ent.get()))
+        Calc_btn = Button(frame_1, text="Calculate", width=33, command=lambda: self.back_end.parse(Item_ent.get()))
         self.parent.clipboard_append(Item_ent.get())
 
+        Item_lbl = Label(frame_1, text="Item Code")
+        Desc_lbl = Label(frame_1, text="Description")
         Glue_lbl = Label(frame_1, text="Glue")
         Paper_lbl = Label(frame_1, text="Paper")
         Liner_lbl = Label(frame_1, text="Liner")
+        Blank_lbl2 = Label('')
+        Blank_lbl3 = Label('')
+        Warehouse_lbl = Label(text='Warehouse')
 
-        Warehouses = [("001", 1), ("LVS", 2)]
         whse = IntVar()
         rb_001 = Radiobutton(frame_1, text="001", padx = 20, variable=whse,
                                          command=lambda:self.switch(whse), value=1)
@@ -49,42 +54,48 @@ class Main_Window(Frame):
         rb_LVS = Radiobutton(frame_1, text="LVS", padx = 20, variable=whse,
                                          command=lambda:self.switch(whse), value=2)
 
-        rb_001.grid(row = 8, sticky=W)
-        rb_LVS.grid(row = 9, sticky=W)
 
         Glue_txt = Text(frame_1, height=1, width = 20)
         Paper_txt = Text(frame_1, height=1, width = 20)
         Liner_txt = Text(frame_1, height=1, width = 20)
-        ItemDesc_txt = Text(frame_1, height=1, width= 30)
+        ItemDesc_txt = Text(frame_1, height=1, width= 20)
 
         Txt_dict = {'Glue':Glue_txt , 'Paper':Paper_txt, 'Liner':Liner_txt, 'Desc':ItemDesc_txt}
         self.back_end.set_text_dict(Txt_dict)
-        Item_ent.grid(row = 0, rowspan=2)
-        Calc_btn.grid(row=0, column = 1, rowspan=2)
 
-        x = 1
-        ItemDesc_txt.grid(row= 1 + x)
-        Glue_lbl.grid(row=2 + x, column = 0, stick=W)
-        Glue_txt.grid(row=2 + x, column = 1)
-        Paper_lbl.grid(row=3 + x, column=0, stick=W)
-        Paper_txt.grid(row=3 + x, column=1)
-        Liner_lbl.grid(row=4 + x, column=0, stick=W)
-        Liner_txt.grid(row=4 + x, column=1)
+
+        offset = 3
+        pad_x = 20
+
+        Item_lbl.grid(row= 1, column = 0, stick=S+W, padx=pad_x, pady=5)
+        Item_ent.grid(row = 1, rowspan=1)
+        Item_ent.grid(row = 1, column=1, pady=5, stick=S)
+        Calc_btn.grid(row=2, column = 0, columnspan=2, stick=E)
+        Blank_lbl2.grid(row= offset)
+        Desc_lbl.grid(row=1+offset, column=0, stick=S+W, padx=pad_x)
+        ItemDesc_txt.grid(row= 1 + offset, column=1)
+        Glue_lbl.grid(row=2 +offset, column = 0, stick=S+W, padx=pad_x)
+        Glue_txt.grid(row=2 +offset, column = 1)
+        Paper_lbl.grid(row=3 +offset, column=0, stick=W, padx=pad_x)
+        Paper_txt.grid(row=3 +offset, column=1)
+        Liner_lbl.grid(row=4 +offset, column=0, stick=W, padx=pad_x)
+        Liner_txt.grid(row=4 +offset, column=1)
+        Blank_lbl3.grid(row=5 + offset)
+        Warehouse_lbl.grid(row=6+offset)
+        rb_001.grid(row = 7 + offset, sticky=W)
+        rb_LVS.grid(row = 8 + offset, sticky=W)
+
 
     def switch(self, var):
         self.back_end.switch_warehouse(var.get())
 
 
-
-
 def main():
     root = Tk()
-    root.geometry("350x250")
+    root.geometry("295x250")
     app = Main_Window(root)
     root.mainloop()
 
 
-
-    
 if __name__ == '__main__':
     main()
