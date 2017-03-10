@@ -5,10 +5,11 @@ Created on Tue Jan 24 12:24:00 2017
 
 @author: Richard Brosius
 """
-
+import os
 from Tkinter import *
 from ttk import Frame, Button, Style
 from Parser import Backend_Manager
+
 
 
 
@@ -19,7 +20,7 @@ class Main_Window(Frame):
         
         self.parent = parent
 
-        path = '/home/rich/Documents/Alliance/Programs/Calculator'
+        path = os.getcwd()
         paper_table = 'Gauge_Data_csv.csv'
         liner_table = 'Liner_Table.csv'
 

@@ -27,8 +27,9 @@ class Backend_Manager():
             description = cb.parse()
             PAPER_WEIGHT = cb.get_paper_weight(self.lookup_table)
             LINER_WEIGHT = cb.get_liner_weight(self.liner_table)
+            GLUE_WEIGHT = cb.get_glue_weight()
             self.update_txt('Desc', description)
-            self.update_txt('Glue', 'Na')
+            self.update_txt('Glue', GLUE_WEIGHT)
             self.update_txt('Paper', PAPER_WEIGHT)
             self.update_txt('Liner',  LINER_WEIGHT)
 
@@ -195,3 +196,8 @@ class CornerBoard_Item():
         return '{0:.3f}'.format(liner_weight)
 
 
+    def get_glue_weight(self):
+        #Glue Model is linear in length and leg size
+        #Quadratic in Gauge
+        glue_weight = sum(self.legs) * self.length * .00029
+        return '{0:.3f}'.format(glue_weight)
