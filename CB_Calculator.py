@@ -9,6 +9,7 @@ import os
 from Tkinter import *
 from ttk import Frame, Button, Style
 from Parser import Backend_Manager
+from Tkconstants import *
 
 
 
@@ -34,12 +35,13 @@ class Main_Window(Frame):
         frame_1=self.parent
 
 
-        Item_ent = Entry(frame_1)
-        Calc_btn = Button(frame_1, text="Calculate", width=33, command=lambda: self.back_end.parse(Item_ent.get()))
-        self.parent.clipboard_append(Item_ent.get())
+        self.Item_ent = Entry(frame_1)
+        self.Item_ent.bind("<KeyRelease>", self.caps)
+        Calc_btn = Button(frame_1, text="Calculate", width=33, command=lambda: self.back_end.parse(self.Item_ent.get()))
+        self.parent.clipboard_append(self.Item_ent.get())
 
-        Item_lbl = Label(frame_1, text="Item Code")
-        Desc_lbl = Label(frame_1, text="Description")
+        Item_lbl = Label(frame_1, text="Item Code:")
+        Desc_lbl = Label(frame_1, text="Description:")
         Glue_lbl = Label(frame_1, text="Glue")
         Paper_lbl = Label(frame_1, text="Paper")
         Liner_lbl = Label(frame_1, text="Liner")
@@ -68,8 +70,8 @@ class Main_Window(Frame):
         pad_x = 20
 
         Item_lbl.grid(row= 1, column = 0, stick=S+W, padx=pad_x, pady=5)
-        Item_ent.grid(row = 1, rowspan=1)
-        Item_ent.grid(row = 1, column=1, pady=5, stick=S)
+        self.Item_ent.grid(row = 1, rowspan=1)
+        self.Item_ent.grid(row = 1, column=1, pady=5, stick=S)
         Calc_btn.grid(row=2, column = 0, columnspan=2, stick=E)
         Blank_lbl2.grid(row= offset)
         Desc_lbl.grid(row=1+offset, column=0, stick=S+W, padx=pad_x)
@@ -89,6 +91,10 @@ class Main_Window(Frame):
     def switch(self, var):
         self.back_end.switch_warehouse(var.get())
 
+    def caps(self, event):
+        bffr = str(self.Item_ent.get().upper())
+        self.Item_ent.delete(0, END)
+        self.Item_ent.insert(END, bffr)
 
 def main():
     root = Tk()
