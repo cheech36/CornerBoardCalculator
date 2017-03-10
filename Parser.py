@@ -20,19 +20,24 @@ class Backend_Manager():
 
     def parse(self, item):
             print('Parsing Item {0}'.format(item))
-            cb = CornerBoard_Item(item)
-            self.parent.clipboard_clear()
-            self.parent.clipboard_append(item)
-            cb.whse = self.whse
-            description = cb.parse()
-            PAPER_WEIGHT = cb.get_paper_weight(self.lookup_table)
-            LINER_WEIGHT = cb.get_liner_weight(self.liner_table)
-            GLUE_WEIGHT = cb.get_glue_weight()
-            self.update_txt('Desc', description)
-            self.update_txt('Glue', GLUE_WEIGHT)
-            self.update_txt('Paper', PAPER_WEIGHT)
-            self.update_txt('Liner',  LINER_WEIGHT)
-
+            try:
+                cb = CornerBoard_Item(item)
+                self.parent.clipboard_clear()
+                self.parent.clipboard_append(item)
+                cb.whse = self.whse
+                description = cb.parse()
+                PAPER_WEIGHT = cb.get_paper_weight(self.lookup_table)
+                LINER_WEIGHT = cb.get_liner_weight(self.liner_table)
+                GLUE_WEIGHT = cb.get_glue_weight()
+                self.update_txt('Desc', description)
+                self.update_txt('Glue', GLUE_WEIGHT)
+                self.update_txt('Paper', PAPER_WEIGHT)
+                self.update_txt('Liner',  LINER_WEIGHT)
+            except:
+                self.update_txt('Desc', 'Invalid Item')
+                self.update_txt('Glue', '')
+                self.update_txt('Paper', '')
+                self.update_txt('Liner', '')
 
     def update_txt(self, field, text):
         self.Text_Fields[field].delete('1.0',END)
@@ -67,6 +72,7 @@ class CornerBoard_Item():
         cornerboard_item = self.code
         print("\nParsing item %s " % cornerboard_item)
         measurements = cornerboard_item.strip("APCB")
+
 
         if (measurements.find("DX") != -1):
             print ("DX Item")
