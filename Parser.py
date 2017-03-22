@@ -73,12 +73,13 @@ class CornerBoard_Item():
         print("\nParsing item %s " % cornerboard_item)
         measurements = cornerboard_item.strip("APCB")
 
-
         if (measurements.find("DX") != -1):
             print ("DX Item")
-            legs_gauge, self.length_str = re.split("DX", measurements)
+            legs_gauge, self.length_str = re.split("DX", measurements)            
             self.legs_str = legs_gauge[0:-3]
-            _ , self.gauge_str = legs_gauge.split(self.legs_str)
+            ## Problem encountered with APCB22225DX46
+            ##_ , self.gauge_str = legs_gauge.split(self.legs_str)
+            self.gauge_str = legs_gauge[len(self.legs_str):]
             self.length = float(self.length_str)
 
             if (len(self.legs_str) == 2):
@@ -94,7 +95,7 @@ class CornerBoard_Item():
             gauge = (int(self.gauge_str) - 30) / 1000
             self.gauge_str = str(gauge)
             self.gauge = float(gauge)
-
+            
         elif (measurements.find('-') != -1):
             print('Bundled Item')
 
